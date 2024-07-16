@@ -1,5 +1,10 @@
 ## Hi there 👋
+<div align="center">
+	<br>
+	<img src="https://raw.githubusercontent.com/Aniket965/Aniket965/master/pacman.svg?sanitize=true" width="200" height="200">
+</div>
 
+<img src="https://github.com/chendada00/chendada00/blob/main/snake/snake.svg" />
 <!--
 **chendada00/chendada00** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
