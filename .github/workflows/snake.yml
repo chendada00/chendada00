@@ -33,7 +33,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          # git checkout -B dist
+          git checkout -B main
           git add snake/snake.svg snake/snake-dark.svg
           git commit -m "Generated snake animation"
           git push origin main
