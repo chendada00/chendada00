@@ -13,10 +13,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install upx
+    - name: Download upx
       run: |
-        curl -sSL https://raw.githubusercontent.com/upyun/upx/master/install.sh | sh
-
+        UPX_VERSION=$(curl -s https://api.github.com/repos/upyun/upx/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        wget https://github.com/upyun/upx/releases/download/${UPX_VERSION}/upx-linux-amd64 -O upx
+        chmod +x upx
+        sudo mv upx /usr/local/bin/
     - name: Sync directories to Upyun
       env:
         UPYUN_SERVICE: ${{ secrets.UPYUN_SERVICE }}
