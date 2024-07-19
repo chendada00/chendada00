@@ -22,6 +22,10 @@ jobs:
         sudo mv upx /usr/local/bin/
 
     - name: Create upx config file
+      env:
+        UPYUN_SERVICE: ${{ secrets.UPYUN_SERVICE }}
+        UPYUN_OPERATOR: ${{ secrets.UPYUN_OPERATOR }}
+        UPYUN_PASSWORD: ${{ secrets.UPYUN_PASSWORD }}
       run: |
         mkdir -p /home/runner/
         echo "[default]" > /home/runner/.upx.cfg
