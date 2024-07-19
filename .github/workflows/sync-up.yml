@@ -16,7 +16,7 @@ jobs:
     - name: Download and install upx
       run: |
         UPX_VERSION="v0.4.6"
-        wget https://github.com/upyun/upx/releases/download/${UPX_VERSION}/upx_0.4.6_linux_amd64.tar.gz -O upx.tar.gz
+        wget https://github.com/upyun/upx/releases/download/v0.4.6/upx_0.4.6_linux_386.tar.gz -O upx.tar.gz
         tar -xzf upx.tar.gz
         chmod +x upx
         sudo mv upx /usr/local/bin/
@@ -38,5 +38,3 @@ jobs:
       run: |
         # 同步第一个目录
         upx sync /snake /github/snake
-        # 同步第二个目录
-        # upx sync /path/to/local/directory2 /path/to/remote/directory2
