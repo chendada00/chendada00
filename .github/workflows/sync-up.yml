@@ -23,11 +23,11 @@ jobs:
 
     - name: Create upx config file
       run: |
-        mkdir -p /home/runner/.config/upx
-        echo "[default]" > /home/runner/.config/upx/config
-        echo "username = ${UPYUN_OPERATOR}" >> /home/runner/.config/upx/config
-        echo "password = ${UPYUN_PASSWORD}" >> /home/runner/.config/upx/config
-        echo "bucket = ${UPYUN_SERVICE}" >> /home/runner/.config/upx/config
+        mkdir -p /home/runner/
+        echo "[default]" > /home/runner/.upx.cfg
+        echo "username = ${UPYUN_OPERATOR}" >> /home/runner/.upx.cfg
+        echo "password = ${UPYUN_PASSWORD}" >> /home/runner/.upx.cfg
+        echo "bucket = ${UPYUN_SERVICE}" >> /home/runner/.upx.cfg
         
     - name: Sync directories to Upyun
       env:
