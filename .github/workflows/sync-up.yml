@@ -1,0 +1,29 @@
+name: Sync to Upyun
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install upx
+      run: |
+        curl -sSL https://raw.githubusercontent.com/upyun/upx/master/install.sh | sh
+
+    - name: Sync directories to Upyun
+      env:
+        UPYUN_SERVICE: ${{ secrets.UPYUN_SERVICE }}
+        UPYUN_OPERATOR: ${{ secrets.UPYUN_OPERATOR }}
+        UPYUN_PASSWORD: ${{ secrets.UPYUN_PASSWORD }}
+      run: |
+        # 同步第一个目录
+        upx sync /snake /github/snake
+        # 同步第二个目录
+        # upx sync /path/to/local/directory2 /path/to/remote/directory2
