@@ -20,6 +20,15 @@ jobs:
         tar -xzf upx.tar.gz
         chmod +x upx
         sudo mv upx /usr/local/bin/
+
+    - name: Create upx config file
+      run: |
+        mkdir -p /home/runner/.config/upx
+        echo "[default]" > /home/runner/.config/upx/config
+        echo "username = ${UPYUN_OPERATOR}" >> /home/runner/.config/upx/config
+        echo "password = ${UPYUN_PASSWORD}" >> /home/runner/.config/upx/config
+        echo "bucket = ${UPYUN_SERVICE}" >> /home/runner/.config/upx/config
+        
     - name: Sync directories to Upyun
       env:
         UPYUN_SERVICE: ${{ secrets.UPYUN_SERVICE }}
