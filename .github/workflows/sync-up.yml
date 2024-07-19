@@ -1,44 +1,49 @@
-name: Sync to Upyun
+name: deploy
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+
+env:
+    TZ: Asia/Shanghai # 设置当前环境时区
 
 jobs:
-  sync:
-    runs-on: ubuntu-latest
-
+  deploy:
+    runs-on: ubuntu-20.04
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Download and install upx
-      run: |
-        UPX_VERSION="v0.4.6"
-        wget https://github.com/upyun/upx/releases/download/v0.4.6/upx_0.4.6_linux_386.tar.gz -O upx.tar.gz
-        tar -xzf upx.tar.gz
-        chmod +x upx
-        sudo mv upx /usr/local/bin/
-
-    - name: Create upx config file
-      env:
-        UPYUN_SERVICE: ${{ secrets.UPYUN_SERVICE }}
-        UPYUN_OPERATOR: ${{ secrets.UPYUN_OPERATOR }}
-        UPYUN_PASSWORD: ${{ secrets.UPYUN_PASSWORD }}
-      run: |
-        mkdir -p /home/runner/
-        echo "[default]" > /home/runner/.upx.cfg
-        echo "username = ${UPYUN_OPERATOR}" >> /home/runner/.upx.cfg
-        echo "password = ${UPYUN_PASSWORD}" >> /home/runner/.upx.cfg
-        echo "bucket = ${UPYUN_SERVICE}" >> /home/runner/.upx.cfg
-        cat /home/runner/.upx.cfg  # 输出配置文件内容进行调试
-        
-    - name: Sync directories to Upyun
-      env:
-        UPYUN_SERVICE: ${{ secrets.UPYUN_SERVICE }}
-        UPYUN_OPERATOR: ${{ secrets.UPYUN_OPERATOR }}
-        UPYUN_PASSWORD: ${{ secrets.UPYUN_PASSWORD }}
-      run: |
-        # 同步第一个目录
-        upx sync /snake /github/snake
+      - name: Git Configuration
+        run: |
+          git config --global core.quotePath false
+          git config --global core.autocrlf false
+          git config --global core.safecrlf true
+          git config --global core.ignorecase false
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+          
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          
+      - name: Build
+        run:
+          hugo --minify
+          
+      - name: deploy-upyun
+        uses: bwcxyk/upyun-upx-action@1.2
+        env:
+          bucket: ${{ secrets.UPYUN_SERVICE }}
+          operator: ${{ secrets.OPERATOR }}
+          operator_password: ${{ secrets.OPERATOR_PASSWORD }}
+          local_path: /snake
+          remote_path: /github/snake
