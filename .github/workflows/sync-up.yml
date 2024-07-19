@@ -28,6 +28,7 @@ jobs:
         echo "username = ${UPYUN_OPERATOR}" >> /home/runner/.upx.cfg
         echo "password = ${UPYUN_PASSWORD}" >> /home/runner/.upx.cfg
         echo "bucket = ${UPYUN_SERVICE}" >> /home/runner/.upx.cfg
+        cat /home/runner/.upx.cfg  # 输出配置文件内容进行调试
         
     - name: Sync directories to Upyun
       env:
